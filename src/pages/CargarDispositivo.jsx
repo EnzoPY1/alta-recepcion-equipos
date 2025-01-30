@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AltaCliente from "./AltaCliente";
 
@@ -16,9 +16,9 @@ function CargarDispositivo({
   const [clientesFiltrados, setClientesFiltrados] = useState([]); // Resultados filtrados
 
   // Función para generar código aleatorio
-  const generarCodigoRecepcion = () => {
-    return "REC-" + Math.random().toString(36).substr(2, 9).toUpperCase();
-  };
+  // const generarCodigoRecepcion = () => {
+  //   return "REC-" + Math.random().toString(36).substr(2, 9).toUpperCase();
+  // };
 
   // Estado inicial para el dispositivo
   const dispositivoInicial = {
@@ -89,14 +89,14 @@ function CargarDispositivo({
   };
 
   // Buscar cliente por identificador
-  const handleBuscarCliente = () => {
-    if (clientes[busquedaCliente]) {
-      setClienteSeleccionado(clientes[busquedaCliente]);
-    } else {
-      alert("Cliente no encontrado.");
-      setClienteSeleccionado(null);
-    }
-  };
+  // const handleBuscarCliente = () => {
+  //   if (clientes[busquedaCliente]) {
+  //     setClienteSeleccionado(clientes[busquedaCliente]);
+  //   } else {
+  //     alert("Cliente no encontrado.");
+  //     setClienteSeleccionado(null);
+  //   }
+  // };
 
   // Agregar cliente desde el popup
   const handleAgregarCliente = (nuevoCliente) => {
@@ -119,10 +119,15 @@ function CargarDispositivo({
       return;
     }
 
+    // 🔹 Generar fecha y código de recepción si no existen
+    const fechaActual = nuevoDispositivo.fecha || new Date().toLocaleString();
+    const codigoRecepcionGenerado =
+      nuevoDispositivo.codigoRecepcion || `REC-${Date.now()}`;
+
     const registroDispositivo = {
       recepcion: {
-        fecha: nuevoDispositivo.fecha,
-        codigoRecepcion: nuevoDispositivo.codigoRecepcion,
+        fecha: fechaActual,
+        codigoRecepcion: codigoRecepcionGenerado,
       },
       cliente: clienteSeleccionado,
       dispositivo: {
@@ -137,16 +142,10 @@ function CargarDispositivo({
       },
     };
 
-    setDispositivos((prev) => [
-      ...prev,
-      {
-        ...nuevoDispositivo,
-        cliente: clienteSeleccionado,
-        fecha: new Date().toLocaleString(), // Genera la fecha actual
-        codigoRecepcion: `REC-${Date.now()}`, // Genera el código único
-      },
-    ]);
-    // Redirección a recepción de paquetes
+    // 🔹 Guardamos `registroDispositivo` en `setDispositivos`
+    setDispositivos((prev) => [...prev, registroDispositivo]);
+
+    // Redirigir después de guardar
     navigate("/recepcion-paquetes");
   };
 
