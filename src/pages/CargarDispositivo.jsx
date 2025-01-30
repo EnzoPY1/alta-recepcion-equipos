@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AltaCliente from "./AltaCliente";
 
@@ -12,6 +12,8 @@ function CargarDispositivo({
   const [busquedaCliente, setBusquedaCliente] = useState("");
   const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
   const [mostrarPopup, setMostrarPopup] = useState(false);
+  const [filtroClientes, setFiltroClientes] = useState(""); // Texto del buscador
+  const [clientesFiltrados, setClientesFiltrados] = useState([]); // Resultados filtrados
 
   // Función para generar código aleatorio
   const generarCodigoRecepcion = () => {
@@ -20,8 +22,8 @@ function CargarDispositivo({
 
   // Estado inicial para el dispositivo
   const dispositivoInicial = {
-    fecha: new Date().toISOString().split("T")[0], // Fecha actual por defecto
-    codigoRecepcion: generarCodigoRecepcion(),
+    fecha: new Date().toLocaleString(), // Fecha de creación del dispositivo
+    codigoRecepcion: `REC-${Date.now()}`, // Código único generado
     dispositivo: "",
     marca: "",
     modelo: "",
@@ -44,11 +46,38 @@ function CargarDispositivo({
     });
   };
 
+  const handleClienteChange = (e) => {
+    const valor = e.target.value;
+    setFiltroClientes(valor);
+
+    // Filtrar clientes según el texto del buscador
+    const resultados = Object.values(clientes).filter(
+      (cliente) =>
+        cliente.nombre.toLowerCase().includes(valor.toLowerCase()) ||
+        cliente.documento.toLowerCase().includes(valor.toLowerCase())
+    );
+    setClientesFiltrados(resultados);
+  };
+
+  const seleccionarCliente = (cliente) => {
+    setClienteSeleccionado(cliente);
+    setFiltroClientes(cliente.nombre); // Rellenar el campo con el nombre completo
+    setClientesFiltrados([]); // Ocultar la lista de sugerencias
+  };
+
   // Función para limpiar el formulario
   const handleLimpiar = () => {
     setNuevoDispositivo({
-      ...dispositivoInicial,
-      codigoRecepcion: generarCodigoRecepcion(), // Generar nuevo código
+      dispositivo: "",
+      marca: "",
+      modelo: "",
+      numeroSerie: "",
+      descripcion: "",
+      accesorios: "",
+      cantidad: 1,
+      fotos: null,
+      fecha: new Date().toLocaleString(), // Reinicia la fecha
+      codigoRecepcion: `REC-${Date.now()}`, // Genera un nuevo código
     });
     setBusquedaCliente("");
     setClienteSeleccionado(null);
@@ -108,10 +137,16 @@ function CargarDispositivo({
       },
     };
 
-    setDispositivos((prevDispositivos) => [
-      ...prevDispositivos,
-      registroDispositivo,
+    setDispositivos((prev) => [
+      ...prev,
+      {
+        ...nuevoDispositivo,
+        cliente: clienteSeleccionado,
+        fecha: new Date().toLocaleString(), // Genera la fecha actual
+        codigoRecepcion: `REC-${Date.now()}`, // Genera el código único
+      },
     ]);
+    // Redirección a recepción de paquetes
     navigate("/recepcion-paquetes");
   };
 
@@ -153,25 +188,37 @@ function CargarDispositivo({
         <input
           type="text"
           placeholder="Buscar cliente por CI/RUC"
-          value={busquedaCliente}
-          onChange={(e) => setBusquedaCliente(e.target.value)}
-          className="border px-4 py-2 rounded w-full mb-2"
+          value={filtroClientes}
+          onChange={handleClienteChange}
+          className="border px-4 py-2 rounded w-full mb-2 bg-white text-gray-900 dark:bg-gray-700 dark:text-white transition-colors duration-300"
         />
-        <button
-          onClick={handleBuscarCliente}
-          className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
-        >
-          Buscar
-        </button>
         <button
           onClick={() => setMostrarPopup(true)}
           className="bg-green-500 text-white px-4 py-2 rounded"
         >
           Agregar Cliente
         </button>
+        {/* Lista de resultados dinámicos */}
+        {clientesFiltrados.length > 0 && (
+          <ul className="border rounded bg-white text-gray-900 dark:bg-gray-800 dark:text-white mt-2 shadow-md max-h-40 overflow-y-auto">
+            {clientesFiltrados.map((cliente, index) => (
+              <li
+                key={index}
+                className="p-2 hover:bg-blue-100 dark:hover:bg-gray-600 cursor-pointer" // Hover dinámico
+                onClick={() => seleccionarCliente(cliente)} // Asigna el cliente al hacer clic
+              >
+                {cliente.nombre} - {cliente.documento}
+              </li>
+            ))}
+          </ul>
+        )}
+        {/* Mostrar cliente seleccionado */}
         {clienteSeleccionado && (
           <p className="mt-4">
-            Cliente seleccionado: <strong>{clienteSeleccionado.nombre}</strong>
+            Cliente seleccionado:{" "}
+            <strong className="text-gray-900 dark:text-yellow-300">
+              {clienteSeleccionado.nombre}
+            </strong>
           </p>
         )}
       </div>

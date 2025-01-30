@@ -1,8 +1,10 @@
 import React from "react";
+import { useTheme } from "../context/ThemeContext";
 import { useNavigate } from "react-router-dom";
 
 function RecepcionPaquetes({ dispositivos }) {
   const navigate = useNavigate();
+  const { theme } = useTheme();
 
   return (
     <div className="container mx-auto p-4">
@@ -18,7 +20,14 @@ function RecepcionPaquetes({ dispositivos }) {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {dispositivos.map((registro, index) => (
-            <div key={index} className="border p-4 rounded shadow bg-white">
+            <div
+              key={index}
+              className={`border p-4 rounded shadow ${
+                theme === "dark"
+                  ? "bg-gray-800 text-white"
+                  : "bg-white text-gray-900"
+              }`}
+            >
               <h3 className="text-lg font-semibold mb-2">Recepción</h3>
               <p>
                 <strong>Fecha:</strong> {registro.fecha || "No definida"}
@@ -33,6 +42,12 @@ function RecepcionPaquetes({ dispositivos }) {
               <p>
                 <strong>Documento:</strong>{" "}
                 {registro.cliente.documento || "N/A"}
+              </p>
+              <p>
+                <strong>Teléfono:</strong> {registro.cliente.telefono || "N/A"}
+              </p>
+              <p>
+                <strong>Correo:</strong> {registro.cliente.correo || "N/A"}
               </p>
               <h3 className="text-lg font-semibold mt-4 mb-2">Dispositivo</h3>
               <p>
