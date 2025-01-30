@@ -22,7 +22,7 @@ function CargarDispositivo({
 
   // Estado inicial para el dispositivo
   const dispositivoInicial = {
-    fecha: new Date().toLocaleString(), // Fecha de creación del dispositivo
+    fecha: new Date().toISOString().split("T")[0], // Fecha de creación del dispositivo
     codigoRecepcion: `REC-${Date.now()}`, // Código único generado
     dispositivo: "",
     marca: "",
@@ -126,8 +126,8 @@ function CargarDispositivo({
 
     const registroDispositivo = {
       recepcion: {
-        fecha: fechaActual,
-        codigoRecepcion: codigoRecepcionGenerado,
+        fecha: nuevoDispositivo.fecha,
+        codigoRecepcion: nuevoDispositivo.codigoRecepcion,
       },
       cliente: clienteSeleccionado,
       dispositivo: {
@@ -164,7 +164,7 @@ function CargarDispositivo({
             name="fecha"
             value={nuevoDispositivo.fecha}
             onChange={handleChange}
-            className="border px-4 py-2 rounded w-full"
+            className="border px-4 py-2 rounded w-full mb-2 bg-white text-gray-900 dark:bg-gray-700 dark:text-white transition-colors duration-300"
             required
           />
         </div>
@@ -175,7 +175,7 @@ function CargarDispositivo({
           <input
             type="text"
             value={nuevoDispositivo.codigoRecepcion}
-            className="border px-4 py-2 rounded w-full bg-gray-100"
+            className="border px-4 py-2 rounded w-full mb-2 bg-white text-gray-900 dark:bg-gray-700 dark:text-white transition-colors duration-300"
             disabled
           />
         </div>
@@ -230,7 +230,7 @@ function CargarDispositivo({
           placeholder="Dispositivo (Celular, Notebook, etc.)"
           value={nuevoDispositivo.dispositivo}
           onChange={handleChange}
-          className="border px-4 py-2 rounded w-full"
+          className="border px-4 py-2 rounded w-full mb-2 bg-white text-gray-900 dark:bg-gray-700 dark:text-white transition-colors duration-300"
           required
         />
         <input
@@ -239,7 +239,7 @@ function CargarDispositivo({
           placeholder="Marca (Opcional)"
           value={nuevoDispositivo.marca}
           onChange={handleChange}
-          className="border px-4 py-2 rounded w-full"
+          className="border px-4 py-2 rounded w-full mb-2 bg-white text-gray-900 dark:bg-gray-700 dark:text-white transition-colors duration-300"
         />
         <input
           type="text"
@@ -247,7 +247,7 @@ function CargarDispositivo({
           placeholder="Modelo (Opcional)"
           value={nuevoDispositivo.modelo}
           onChange={handleChange}
-          className="border px-4 py-2 rounded w-full"
+          className="border px-4 py-2 rounded w-full mb-2 bg-white text-gray-900 dark:bg-gray-700 dark:text-white transition-colors duration-300"
         />
         <input
           type="text"
@@ -255,14 +255,14 @@ function CargarDispositivo({
           placeholder="Número de Serie (Opcional)"
           value={nuevoDispositivo.numeroSerie}
           onChange={handleChange}
-          className="border px-4 py-2 rounded w-full"
+          className="border px-4 py-2 rounded w-full mb-2 bg-white text-gray-900 dark:bg-gray-700 dark:text-white transition-colors duration-300"
         />
         <textarea
           name="descripcion"
           placeholder="Descripción (Requerido)"
           value={nuevoDispositivo.descripcion}
           onChange={handleChange}
-          className="border px-4 py-2 rounded w-full"
+          className="border px-4 py-2 rounded w-full mb-2 bg-white text-gray-900 dark:bg-gray-700 dark:text-white transition-colors duration-300"
           required
         />
         <textarea
@@ -270,7 +270,7 @@ function CargarDispositivo({
           placeholder="Accesorios (Opcional)"
           value={nuevoDispositivo.accesorios}
           onChange={handleChange}
-          className="border px-4 py-2 rounded w-full"
+          className="border px-4 py-2 rounded w-full mb-2 bg-white text-gray-900 dark:bg-gray-700 dark:text-white transition-colors duration-300"
         />
         <input
           type="number"
@@ -278,7 +278,7 @@ function CargarDispositivo({
           placeholder="Cantidad (Requerido)"
           value={nuevoDispositivo.cantidad}
           onChange={handleChange}
-          className="border px-4 py-2 rounded w-full"
+          className="border px-4 py-2 rounded w-full mb-2 bg-white text-gray-900 dark:bg-gray-700 dark:text-white transition-colors duration-300"
           required
         />
         <input
@@ -316,7 +316,7 @@ function CargarDispositivo({
       {/* Popup para alta de cliente */}
       {mostrarPopup && (
         <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded shadow-lg w-96">
+          <div className="bg-white dark:bg-gray-800 dark:text-white p-6 rounded shadow-lg w-96">
             <h3 className="text-lg font-bold mb-4">Alta de Cliente</h3>
             <AltaCliente
               clientes={clientes}

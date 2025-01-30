@@ -54,14 +54,14 @@ function AltaCliente({ clientes, setClientes }) {
           placeholder="Nombre"
           value={formData.nombre}
           onChange={handleChange}
-          className="border px-4 py-2 rounded w-full mb-2"
+          className="border px-4 py-2 rounded w-full mb-2 bg-white text-gray-900 dark:bg-gray-700 dark:text-white transition-colors duration-300"
           required
         />
         <select
           name="tipoDocumento"
           value={formData.tipoDocumento}
           onChange={handleChange}
-          className="border px-4 py-2 rounded w-full mb-2"
+          className="border px-4 py-2 rounded w-full mb-2 bg-white text-gray-900 dark:bg-gray-700 dark:text-white transition-colors duration-300"
           required
         >
           <option value="">Tipo de Documento</option>
@@ -75,7 +75,7 @@ function AltaCliente({ clientes, setClientes }) {
           placeholder="Número de Documento"
           value={formData.documento}
           onChange={handleChange}
-          className="border px-4 py-2 rounded w-full mb-2"
+          className="border px-4 py-2 rounded w-full mb-2 bg-white text-gray-900 dark:bg-gray-700 dark:text-white transition-colors duration-300"
           required
           disabled={clienteEditado} // Evita cambiar el documento al editar
         />
@@ -85,7 +85,7 @@ function AltaCliente({ clientes, setClientes }) {
           placeholder="Teléfono"
           value={formData.telefono}
           onChange={handleChange}
-          className="border px-4 py-2 rounded w-full mb-2"
+          className="border px-4 py-2 rounded w-full mb-2 bg-white text-gray-900 dark:bg-gray-700 dark:text-white transition-colors duration-300"
           required
         />
         <input
@@ -94,7 +94,7 @@ function AltaCliente({ clientes, setClientes }) {
           placeholder="Correo"
           value={formData.correo}
           onChange={handleChange}
-          className="border px-4 py-2 rounded w-full mb-2"
+          className="border px-4 py-2 rounded w-full mb-2 bg-white text-gray-900 dark:bg-gray-700 dark:text-white transition-colors duration-300"
         />
         <div className="flex gap-4">
           <button

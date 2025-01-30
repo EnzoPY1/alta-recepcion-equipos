@@ -30,10 +30,10 @@ function RecepcionPaquetes({ dispositivos }) {
             >
               <h3 className="text-lg font-semibold mb-2">Recepción</h3>
               <p>
-                <strong>Fecha:</strong> {registro.fecha || "No definida"}
+                <strong>Fecha:</strong> {registro.recepcion?.fecha}
               </p>
               <p>
-                <strong>Código:</strong> {registro.codigoRecepcion || "N/A"}
+                <strong>Código:</strong> {registro.recepcion?.codigoRecepcion}
               </p>
               <h3 className="text-lg font-semibold mt-4 mb-2">Cliente</h3>
               <p>
@@ -52,7 +52,7 @@ function RecepcionPaquetes({ dispositivos }) {
               <h3 className="text-lg font-semibold mt-4 mb-2">Dispositivo</h3>
               <p>
                 <strong>Dispositivo:</strong>{" "}
-                {registro.dispositivo.dispositivo || "N/A"}
+                {registro.dispositivo?.dispositivo}
               </p>
               <p>
                 <strong>Marca:</strong> {registro.dispositivo.marca || "N/A"}
