@@ -101,14 +101,14 @@ function CargarDispositivo({
   // Agregar cliente desde el popup
   const handleAgregarCliente = (nuevoCliente) => {
     if (nuevoCliente) {
-      setClientes((prevClientes) => ({
-        ...prevClientes,
+      setClientes((prev) => ({
+        ...prev,
         [nuevoCliente.documento]: nuevoCliente,
       }));
       setClienteSeleccionado(nuevoCliente);
       setBusquedaCliente(nuevoCliente.documento);
     }
-    setMostrarPopup(false);
+    setMostrarPopup(false); // Cerrar popup en cualquier caso
   };
 
   // Guardar dispositivo y redireccionar
@@ -321,7 +321,8 @@ function CargarDispositivo({
             <AltaCliente
               clientes={clientes}
               setClientes={setClientes}
-              onCancel={handleAgregarCliente}
+              onSubmit={handleAgregarCliente} // Para guardar
+              onCancel={() => setMostrarPopup(false)} // Para cancelar
               isPopup={true}
             />
           </div>

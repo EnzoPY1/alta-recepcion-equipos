@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-function AltaCliente({ clientes, setClientes }) {
+function AltaCliente({ clientes, setClientes, onSubmit, onCancel, isPopup }) {
   const navigate = useNavigate();
   const location = useLocation();
   const clienteEditado = location.state?.cliente || null; // Cliente a editar si existe
@@ -39,7 +39,12 @@ function AltaCliente({ clientes, setClientes }) {
     }));
 
     // Redirigir a la lista de clientes
-    navigate("/clientes");
+    if (!isPopup) {
+      navigate("/clientes");
+    } else {
+      // Si es popup, ejecutar callback de éxito
+      if (onSubmit) onSubmit(formData);
+    }
   };
 
   return (
@@ -105,7 +110,13 @@ function AltaCliente({ clientes, setClientes }) {
           </button>
           <button
             type="button"
-            onClick={() => navigate("/clientes")}
+            onClick={() => {
+              if (isPopup && onCancel) {
+                onCancel(); // Cierra popup
+              } else {
+                navigate("/clientes");
+              }
+            }}
             className="bg-red-500 text-white px-4 py-2 rounded"
           >
             Cancelar
